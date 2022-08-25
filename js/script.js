@@ -11,7 +11,7 @@ const form = document.querySelector(".form");
 const inputSearch = document.querySelector(".input__search");
 const buttonPrev = document.querySelector(".btn__prev");
 const buttonNext = document.querySelector(".btn__next");
-
+const buttonShiny = document.querySelector(".btn__shiny");
 let searchPokemon = 1;
 
 const fetchPokemon = async (pokemon) => {
@@ -21,9 +21,15 @@ const fetchPokemon = async (pokemon) => {
 };
 
 const renderPokemon = async (pokemon) => {
+	pokemonImage.style.display = "block";
 	pokemonName.innerHTML = "Loading...";
 	pokemonID.innerHTML = "";
 	pokemonHP.innerHTML = "";
+	pokemonAttack.innerHTML = "";
+	pokemonDefense.innerHTML = "";
+	pokemonSpecialDefense.innerHTML = "";
+	pokemonSpecialAttack.innerHTML = "";
+	pokemonSpeed.innerHTML = "";
 	try {
 		const pokemonData = await fetchPokemon(pokemon);
 		console.log(pokemonData);
@@ -46,6 +52,52 @@ const renderPokemon = async (pokemon) => {
 		pokemonName.innerHTML = "Not Found :(";
 		pokemonImage.style.display = "none";
 		pokemonID.innerHTML = "";
+		pokemonHP.innerHTML = "";
+		pokemonAttack.innerHTML = "";
+		pokemonDefense.innerHTML = "";
+		pokemonSpecialDefense.innerHTML = "";
+		pokemonSpecialAttack.innerHTML = "";
+		pokemonSpeed.innerHTML = "";
+	}
+};
+const renderPokemonShiny = async (pokemon) => {
+	pokemonImage.style.display = "block";
+	pokemonName.innerHTML = "Loading...";
+	pokemonID.innerHTML = "";
+	pokemonHP.innerHTML = "";
+	pokemonAttack.innerHTML = "";
+	pokemonDefense.innerHTML = "";
+	pokemonSpecialDefense.innerHTML = "";
+	pokemonSpecialAttack.innerHTML = "";
+	pokemonSpeed.innerHTML = "";
+	try {
+		const pokemonData = await fetchPokemon(pokemon);
+		console.log(pokemonData);
+		if (pokemonData) {
+			pokemonName.innerHTML = pokemonData.name;
+			pokemonID.innerHTML = pokemonData.id;
+			pokemonImage.src =
+				pokemonData["sprites"]["versions"]["generation-v"]["black-white"][
+				"animated"
+				]["front_shiny"];
+			pokemonHP.innerHTML = pokemonData["stats"][0]["base_stat"];
+			pokemonAttack.innerHTML = pokemonData["stats"][1]["base_stat"];
+			pokemonDefense.innerHTML = pokemonData["stats"][2]["base_stat"];
+			pokemonSpecialAttack.innerHTML = pokemonData["stats"][3]["base_stat"];
+			pokemonSpecialDefense.innerHTML = pokemonData["stats"][4]["base_stat"];
+			pokemonSpeed.innerHTML = pokemonData["stats"][5]["base_stat"];
+			searchPokemon = pokemonData.id;
+		}
+	} catch (error) {
+		pokemonName.innerHTML = "Not Found :(";
+		pokemonImage.style.display = "none";
+		pokemonID.innerHTML = "";
+		pokemonHP.innerHTML = "";
+		pokemonAttack.innerHTML = "";
+		pokemonDefense.innerHTML = "";
+		pokemonSpecialDefense.innerHTML = "";
+		pokemonSpecialAttack.innerHTML = "";
+		pokemonSpeed.innerHTML = "";
 	}
 };
 
@@ -65,6 +117,10 @@ buttonPrev.addEventListener("click", () => {
 buttonNext.addEventListener("click", () => {
 	searchPokemon += 1;
 	renderPokemon(searchPokemon);
+});
+
+buttonShiny.addEventListener("click", () => {
+		renderPokemonShiny(searchPokemon);	
 });
 
 renderPokemon(searchPokemon);
